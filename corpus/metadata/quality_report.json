@@ -1,0 +1,32 @@
+{
+  "sources": 4,
+  "chunks": 2542,
+  "words": 360485,
+  "production_approved_chunks": 0,
+  "details": [
+    {
+      "source_id": "brihat_jataka",
+      "units": 298,
+      "words": 87518,
+      "chunks": 303
+    },
+    {
+      "source_id": "brihat_samhita",
+      "units": 489,
+      "words": 152716,
+      "chunks": 495
+    },
+    {
+      "source_id": "sepharial",
+      "units": 537,
+      "words": 36085,
+      "chunks": 554
+    },
+    {
+      "source_id": "tetrabiblos",
+      "units": 1179,
+      "words": 84166,
+      "chunks": 1190
+    }
+  ]
+}

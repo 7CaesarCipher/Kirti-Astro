@@ -1,0 +1,11 @@
+pyswisseph==2.10.3.2
+tzdata>=2025.2
+
+PyJHora==4.8.7
+numpy>=2.0
+python-dateutil>=2.9
+pytz>=2025.2
+requests>=2.32
+geopy>=2.4
+geocoder==1.38.1
+timezonefinder>=6.5

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kirti Astro</title>
+    <link rel="stylesheet" href="/style.css" />
+    <script defer src="/app.js"></script>
+    <script defer src="/i18n.js"></script>
+  </head>
+  <body>
+    <header>
+      <a href="/" class="brand"><span>✧</span> Kirti Astro</a
+      ><span class="header-note"
+        >A little perspective, written in the stars.</span
+      ><label class="language-picker" for="language"
+        >Language / भाषा<select id="language" aria-label="Language">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select></label
+      >
+    </header>
+    <main>
+      <section id="entry">
+        <div class="intro">
+          <span class="eyebrow">YOUR PERSONAL BIRTH CHART</span>
+          <h1>Start with your story.</h1>
+          <p>
+            Enter your birth details to explore your charts<br />and the
+            traditional meanings behind them.
+          </p>
+        </div>
+        <form id="birth-form" class="card form">
+          <label for="name">Name <span class="optional">optional</span></label
+          ><input
+            id="name"
+            name="name"
+            autocomplete="given-name"
+            placeholder="Your name"
+            maxlength="100"
+          />
+          <div class="two">
+            <div>
+              <label for="date">Date of birth</label
+              ><input
+                id="date"
+                name="date"
+                type="date"
+                min="1900-01-01"
+                required
+              />
+            </div>
+            <div>
+              <label for="time">Time of birth</label
+              ><input id="time" name="time" type="time" required />
+            </div>
+          </div>
+          <label for="place">Place of birth</label>
+          <div class="place-row">
+            <input
+              id="place"
+              autocomplete="off"
+              placeholder="City or locality, e.g. Prayagraj"
+              required
+              aria-controls="places"
+            /><button type="button" id="find-place" class="secondary">
+              Find place
+            </button>
+          </div>
+          <div id="places" aria-live="polite"></div>
+          <p id="selected-place" class="small"></p>
+          <button id="generate" class="primary" type="submit">
+            Generate my reading <span>↗</span>
+          </button>
+          <p id="form-error" role="alert" class="error"></p>
+          <p class="privacy">
+            Your details stay in this local session. Place searches use an
+            online location service.
+          </p>
+        </form>
+        <p class="disclaimer">
+          A traditional perspective for reflection, not a prediction of certain
+          events.
+        </p>
+      </section>
+      <section id="results" hidden>
+        <div class="result-heading">
+          <div>
+            <span class="eyebrow">YOUR PERSONAL READING</span>
+            <h1 id="reading-title"></h1>
+            <p id="birth-summary"></p>
+          </div>
+          <button id="new-reading" class="secondary">New reading</button>
+        </div>
+        <div id="summary-cards" class="summary-cards"></div>
+        <div id="uncertainty" class="notice"></div>
+        <div class="section-heading">
+          <h2>Your key charts</h2>
+          <span>South Indian layout · signs fixed</span>
+        </div>
+        <section class="card chart-guide" id="chart-guide">
+          <h2>How the chart is calculated</h2>
+          <p id="degree-guide">
+            Each zodiac sign covers 30°. A longitude of 47.5° means Taurus
+            17°30′ because Taurus begins at 30°. Divisional charts split each
+            30° sign into smaller parts using their own mapping rules.
+          </p>
+        </section>
+        <details class="card more"><summary>Yogas, Shadbala and Ashtakavarga</summary><div id="assessment"></div></details>
+        <div id="key-charts" class="charts"></div>
+        <details class="card more">
+          <summary>Explore all 17 divisional charts</summary>
+          <label for="division">Choose a chart</label
+          ><select id="division"></select>
+          <div id="extra-chart"></div>
+        </details>
+        <section class="card reading">
+          <span class="eyebrow">THE BIG PICTURE</span>
+          <h2 id="selected-reading-title">Your reading · D1</h2>
+          <p id="reading-mode" class="small"></p>
+          <div id="answer" class="prose"></div>
+          <details id="references">
+            <summary>References and calculation settings</summary>
+            <div id="reference-content"></div>
+          </details>
+        </section>
+        <div class="two result-details">
+          <section class="card">
+            <h2>Planetary details</h2>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Planet</th>
+                    <th>Sign / degree</th>
+                    <th>House</th>
+                  </tr>
+                </thead>
+                <tbody id="planet-table"></tbody>
+              </table>
+            </div>
+          </section>
+          <section class="card">
+            <h2>Your current period</h2>
+            <div id="periods"></div>
+          </section>
+        </div>
+        <section class="card chat">
+          <h2>Keep exploring</h2>
+          <p class="small">Your birth chart is calculated once. Open chat and ask as many follow-up questions as you like about the selected chart.</p>
+          <details id="explore-chat">
+          <summary>Open chart chat</summary>
+          <label for="chat-language">Chat language / चैट की भाषा</label>
+          <select id="chat-language" aria-label="Chat language">
+            <option value="en">English</option>
+            <option value="hi">हिन्दी</option>
+            <option value="both">Both / दोनों</option>
+          </select>
+          <p id="chat-translation-status" class="small" role="status"></p>
+          <p id="chat-scope" class="small">Chatting about D1 · Birth chart</p>
+          <div id="suggested-questions" class="question-options" aria-label="Suggested chart questions"></div>
+          <div id="messages" aria-live="polite"></div>
+          <form id="chat-form">
+            <input
+              id="question"
+              aria-label="Follow-up question"
+              placeholder="What does my chart say about career?"
+              required
+              maxlength="2000"
+            /><button class="primary" id="ask">Ask ↗</button>
+          </form>
+          </details>
+        </section>
+        <p class="disclaimer">
+          Astrology is not scientifically validated. Readings are symbolic
+          interpretations, not medical or financial advice.
+        </p>
+      </section>
+    </main>
+    <footer>
+      Kirti Astro
+      <span>Calculated with Lahiri ayanamsa · Whole-sign houses</span>
+    </footer>
+  </body>
+</html>

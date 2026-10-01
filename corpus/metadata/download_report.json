@@ -1,0 +1,42 @@
+[
+  {
+    "file": "brihat_jataka_djvu.xml",
+    "status": "cached",
+    "sha256": "cc8a33f95f92c6fbc0dc7861686c2a36ca56b17a20d4244ea8b1c428326e05fe"
+  },
+  {
+    "file": "brihat_jataka_djvu.txt",
+    "status": "cached",
+    "sha256": "bf1afe4510937e04157ba06f2c3a6d849c262ea3fffa1b922662973172bc0152"
+  },
+  {
+    "file": "brihat_jataka_metadata.json",
+    "status": "cached",
+    "sha256": "8fc12ba769d4defb11b5269d0c03f4f4fa444479d6e2decfc55d89b0d1a6c800"
+  },
+  {
+    "file": "brihat_samhita_djvu.xml",
+    "status": "cached",
+    "sha256": "cdd85157de2a8e9ce4d510bd1fedfd5017034bb0142649aec70efcee5d05ae7c"
+  },
+  {
+    "file": "brihat_samhita_djvu.txt",
+    "status": "cached",
+    "sha256": "9e633e9a33fb59b844a3a948d29bffa3e76f4f8d06b0714e53be52a0b28d3584"
+  },
+  {
+    "file": "brihat_samhita_metadata.json",
+    "status": "cached",
+    "sha256": "7ce79507cebc72a3476eba7c83f79d8ecc039b67f066d03eba46b93f3cd4a7ea"
+  },
+  {
+    "file": "sepharial.txt",
+    "status": "cached",
+    "sha256": "93a32745a37a43763e1b62924e59d136c886a58f050febbbf8f1b6798d80eaf6"
+  },
+  {
+    "file": "tetrabiblos.txt",
+    "status": "cached",
+    "sha256": "9acc3da34642eb0a54d8b14224bfa52017aec6bb7f8c0558f50e8492ed226fc1"
+  }
+]

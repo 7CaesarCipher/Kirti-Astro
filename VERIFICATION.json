@@ -1,0 +1,8 @@
+{
+  "backend_tests_passed": 8,
+  "dom_http_flow": "passed",
+  "live_geocoding": "Prayagraj returned coordinates and Asia/Kolkata",
+  "visual_browser": "blocked: socket operation not permitted",
+  "docker": "not executed",
+  "ollama": "not configured or tested"
+}

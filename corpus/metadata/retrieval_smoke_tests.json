@@ -1,0 +1,30 @@
+[
+  {
+    "source": "brihat_jataka",
+    "query": "wealth",
+    "top_chunk": "brihat_jataka-u00153-w00000",
+    "locator": "XML scan page 159 (not printed page)",
+    "sample": "CH. X.] Brihat Jdtakd. that a person's avocation will be all the three stated for the lords of the Navamsas occupied by the lords of the 10th house from the Lagna, the Moon and the Sun. 2. If the lord of the Navanisa (a) be the Sun, a person will get"
+  },
+  {
+    "source": "brihat_samhita",
+    "query": "Jupiter",
+    "top_chunk": "brihat_samhita-u00066-w00000",
+    "locator": "XML scan page 69 (not printed page)",
+    "sample": "Ch. 8.] Beihat Samhita. 49 (the name of the first of Jupiter\u2019s 12 Yagas, each consisting of 5 years); and the remainder will give the years by which Jupiter has advanced in his current Yuga. 22. Divided (Jupiter\u2019s years) by 12 and multiply the remain"
+  },
+  {
+    "source": "sepharial",
+    "query": "houses",
+    "top_chunk": "sepharial-u00320-w00000",
+    "locator": "Transcription paragraph 321",
+    "sample": "When Uranus afflicts a planet in the 5th House, there will be some premature births, and generally it will be observed that when planets are opposed from the 11th and 5th Houses, or malefic planets occupy those houses, there is trouble through the pr"
+  },
+  {
+    "source": "tetrabiblos",
+    "query": "marriage",
+    "top_chunk": "tetrabiblos-u00897-w00000",
+    "locator": "Transcription paragraph 898",
+    "sample": "Again, if Venus be with Saturn, the cohabitation will be established entirely in happiness and constancy; and if Mercury be present with them, it will be profitable; but, should Mars be present, it will be unsettled, calamitous, and afflicted by jeal"
+  }
+]
