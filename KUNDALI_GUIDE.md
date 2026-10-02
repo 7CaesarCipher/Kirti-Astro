@@ -52,3 +52,9 @@ Implementation tests check code behavior, not independent astronomical accuracy 
 ℞ means apparent retrograde motion as viewed from Earth; it does not mean the planet physically reverses its orbit. The flag is inherited from the natal calculation in all divisional charts. Rahu and Ketu are lunar nodes, not physical planets.
 
 Each chart cell shows a derived angle within its mapped sign, including the ascendant. D1 uses the natal angle. Other charts scale progress through the source segment to 0–30°: mapped angle = (natal degree − segment start) / segment width × 30. D30 uses this explicitly chosen display convention within its unequal segments; other software may use different conventions. These coordinates are not new astronomical longitudes. Exact natal positions remain available in the mapping explanation.
+
+## Transit zodiac and per-chart summaries
+
+Every supported chart has a personal natal summary and a transit table. A single snapshot at the reading generation timestamp supplies the nine planets/nodes for all 17 charts. D1 shows actual Lahiri sidereal transit positions; other divisions project these longitudes using the existing mapping rules, including unequal D30 segments. Tables retain actual zodiac positions beside derived divisional signs and angles. Houses are counted from the natal ascendant of each chart, not a newly calculated transit ascendant. Retrograde flags come from the current snapshot.
+
+The snapshot is cached: chart selection and chat do not recalculate birth positions. Generate a new reading to refresh it. Divisional transit projections are labelled as derived coordinates and are not validated event forecasts. Tests verify shared timestamps, mapping and house consistency, not independent astronomical accuracy.

@@ -89,7 +89,7 @@ Tests cover corpus integrity, source isolation, approval hash checking, represen
 
 Swiss Ephemeris/pyswisseph uses AGPL licensing with a separate professional licensing option from Astrodienst. This project's application code is supplied under AGPL-3.0-or-later; see LICENSE. Do not assume that a closed-source hosted deployment is permitted without addressing those obligations. Underlying books retain their own rights and Gutenberg distribution terms; see corpus/README.md and sources.json. Location data: Open-Meteo/GeoNames attribution, https://open-meteo.com/en/docs/geocoding-api ; bundled locality: https://mapcarta.com/14893376 .
 
-Astrology is traditional interpretation, not scientifically validated prediction. No Shadbala, Ashtakavarga, event guarantees, complete transit interpretation, medical diagnosis, investment recommendation or full universal astrology coverage is claimed.
+Astrology is traditional interpretation, not scientifically validated prediction. No event guarantees, complete transit interpretation, medical diagnosis, investment recommendation or full universal astrology coverage is claimed.
 
 ## Verification for this package
 
@@ -117,12 +117,8 @@ Inside Keep exploring → Open chart chat, choose English, हिन्दी or
 
 Translation uses the configured local Ollama model; no new cloud service is added. Missing/unavailable models, incomplete Hindi, or changed numeric/planet/sign tokens cause an explicit English fallback. These token checks do not verify semantic equivalence. A live test exposed poor Hindi wording from qwen2.5:3b. Protected names and numeric checks reduce factual changes but do not validate Hindi quality; longer outputs and browser behavior still need review. Native example: `OLLAMA_MODEL=qwen2.5:3b PORT=8001 python server.py`.
 
-Use `OLLAMA_TRANSLATION_MODEL` to enable local translation independently of AI interpretation. The current development server uses `qwen2.5:3b` for translation; its language quality needs review. Chat and conversation translations stream progressively. Hindi is labelled as draft while streaming and replaced by a checked final result or explicit original-language fallback.
+Hindi replies now use deterministic summaries of stored chart calculations. They are labelled as summaries, not word-for-word translations. Unsupported free-text translations retain the original text with a notice. No unchecked Hindi model drafts are streamed. Set `OLLAMA_MODEL=qwen2.5:3b` for optional concise English answers; the translation-model environment variable is no longer used.
 
-## Streamed LLM summaries
+Chat uses the stored chart, timing analysis and assessment; switching language or asking another question does not recalculate the birth chart. Marriage replies receive D1 and D9 placements and retain the topic for follow-up questions.
 
-Set both `OLLAMA_MODEL=qwen2.5:3b` and `OLLAMA_TRANSLATION_MODEL=qwen2.5:3b` to enable concise chat answers and translation. Chat now uses `/api/chat-stream`; conversation switching uses `/api/translate-stream`. Both emit NDJSON status, accumulated text deltas and a final answer. Model context contains the selected chart, relevant timing candidates and recent messages, rather than all detailed chart mappings.
-
-The page-language dropdown also updates chat language. Both user questions and assistant replies are translated, with original text retained. Cached translations display immediately; uncached translations stream, latest messages first. Hindi quality from this small model remains limited; numeric/name checks and excessive-length checks do not verify semantic equivalence. Browser checks observed actual English and Hindi text arriving progressively.
-
-Marriage timing replies now receive both D1 and D9 seventh-house ruler placements irrespective of the selected chart. Follow-up questions about reasons or time retain the recent topic. The model is instructed to give supplied candidate periods and their dasha/transit reasons, with simple conversational Hindi translation. This instruction is not an independent semantic verifier of model output.
+The assessment panel includes all six Shadbala categories, BAV/SAV, reductions, Shodhya Pindas and D1 checks for the 284-rule pinned yoga catalogue. Local corpus research excerpts retain source IDs and locators. Unreviewed excerpts are explicitly labelled and do not become approved interpretation evidence. See [ASSESSMENT.md](ASSESSMENT.md) for methods and limitations.

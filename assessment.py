@@ -22,17 +22,21 @@ def calculate(chart):
         const.use_internet_for_location_check=False
         const.check_database_for_world_cities=False
         const.set_node_mode(False)
+        const.get_place_elevation_from_internet=False
+        drik._sidereal_planet_list={body:identifier for body,identifier in zip([const._SUN,const._MOON,const._MARS,const._MERCURY,const._JUPITER,const._VENUS,const._SATURN,const._RAHU,const._KETU],range(9))}
+        drik.planet_list=drik._sidereal_planet_list.copy()
         drik.set_ayanamsa_mode('LAHIRI')
         drik.PLANET_FLAGS=astro.swe.FLG_MOSEPH|astro.swe.FLG_SIDEREAL|astro.swe.FLG_SPEED
         birth=datetime.fromisoformat(chart['birth_utc'])
         local=birth.astimezone(ZoneInfo(chart['profile']['place']['timezone']))
         offset=local.utcoffset().total_seconds()/3600
         p=chart['profile']['place']
-        place=drik.Place('Birth locality',p['latitude'],p['longitude'],offset)
+        place=drik.Place('Birth locality',p['latitude'],p['longitude'],offset,elevation=0.0)
         jd=utils.julian_day_number((local.year,local.month,local.day),(local.hour,local.minute,local.second))
         pp=charts.rasi_chart(jd,place)
         natal={p['name']:p for p in chart['planets']}
-        mismatch={NAMES[i]:angular_distance(pp[i+1][1][0]*30+pp[i+1][1][1],natal[NAMES[i]]['longitude']) for i in range(7)}
+        all_names=NAMES+['Rahu','Ketu']
+        mismatch={name:angular_distance(pp[i+1][1][0]*30+pp[i+1][1][1],natal[name]['longitude']) for i,name in enumerate(all_names)}
         if max(mismatch.values())>0.01:raise ValueError('Strength engine positions differ from the displayed birth chart')
         parts={
             'sthana':strength._sthana_bala(jd,place),

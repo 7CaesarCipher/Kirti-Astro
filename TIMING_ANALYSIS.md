@@ -22,7 +22,7 @@ Within each candidate, inspect the monthly samples for Jupiter or Saturn occupyi
 
 ## Limits
 
-Monthly samples can miss contacts between samples and do not establish continuous overlap. Dasha endpoints are half-open interval boundaries, not event dates. Full yogas, planetary strength, afflictions, complete transit analysis, real-world relationship/financial circumstances and birth-time rectification are not assessed. D1 and supplementary ascendant sensitivity is flagged using the existing ±1-minute samples; planetary boundary sensitivity is not exhaustively assessed. No source passages are automatically approved or used as evidence for these editorial algorithms.
+Monthly samples can miss contacts between samples and do not establish continuous overlap. Dasha endpoints are half-open interval boundaries, not event dates. Yoga and planetary-strength results appear in a separate assessment panel; they are not filters in these timing screens. Afflictions, complete transit analysis, real-world relationship/financial circumstances and birth-time rectification are not assessed. D1 and supplementary ascendant sensitivity is flagged using the existing ±1-minute samples; planetary boundary sensitivity is not exhaustively assessed. No source passages are automatically approved or used as evidence for these editorial algorithms.
 
 ## General questions
 

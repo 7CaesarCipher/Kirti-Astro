@@ -39,8 +39,8 @@
       "#new-reading": "New reading",
       ".section-heading h2": "Your key charts",
       ".section-heading span": "South Indian layout · signs fixed",
-      ".more summary": "Explore all 17 divisional charts",
-      ".more label": "Choose a chart",
+      "#divisional-charts > summary": "Explore all 17 divisional charts",
+      "#divisional-charts label": "Choose a chart",
       ".reading .eyebrow": "THE BIG PICTURE",
 
       "#references summary": "References and calculation settings",
@@ -73,8 +73,8 @@
       "#new-reading": "नई रीडिंग",
       ".section-heading h2": "आपकी मुख्य कुंडलियाँ",
       ".section-heading span": "दक्षिण भारतीय प्रारूप · राशियाँ स्थिर",
-      ".more summary": "सभी 17 विभागीय कुंडलियाँ देखें",
-      ".more label": "कुंडली चुनें",
+      "#divisional-charts > summary": "सभी 17 विभागीय कुंडलियाँ देखें",
+      "#divisional-charts label": "कुंडली चुनें",
       ".reading .eyebrow": "समग्र दृष्टि",
 
       "#references summary": "संदर्भ और गणना सेटिंग्स",

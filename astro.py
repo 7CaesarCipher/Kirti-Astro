@@ -97,6 +97,32 @@ def dashas(moon,birth,now):
   periods.append({'lord':LORDS[idx],'start':start.isoformat(),'end':end.isoformat(),'current':start<=now<end,'subperiods':subs});start=end
  return {'current':next((p for p in periods if p['current']),None),'timeline':[p for p in periods if datetime.fromisoformat(p['end'])>now][:4],'year_days':365.25}
 
+
+def attach_transits(charts,now):
+ """One sidereal snapshot, projected into each varga using its natal ascendant."""
+ if now.tzinfo is None:raise ValueError('Transit timestamp must include a timezone.')
+ now=now.astimezone(timezone.utc)
+ jd=swe.julday(now.year,now.month,now.day,now.hour+now.minute/60+(now.second+now.microsecond/1e6)/3600)
+ positions=[]
+ with LOCK:
+  swe.set_sid_mode(swe.SIDM_LAHIRI)
+  flags=swe.FLG_MOSEPH|swe.FLG_SIDEREAL|swe.FLG_SPEED
+  for name,body in [('Sun',0),('Moon',1),('Mercury',2),('Venus',3),('Mars',4),('Jupiter',5),('Saturn',6),('Rahu',swe.MEAN_NODE)]:
+   values,_=swe.calc_ut(jd,body,flags)
+   positions.append({'name':name,'longitude':values[0],'retrograde':values[3]<0})
+  positions.append({'name':'Ketu','longitude':(positions[-1]['longitude']+180)%360,'retrograde':positions[-1]['retrograde']})
+ for code,c in charts.items():
+  n=int(code);rows=[]
+  for p in positions:
+   mapping=division_details(p['longitude'],n);index=division(p['longitude'],n)
+   rows.append(dict(p,mapping=mapping,sign=SIGNS[index],sign_index=index,degree=mapping['mapped_degree'],house=(index-c['ascendant_index'])%12+1))
+  c['transit']={'as_of':now.isoformat(),'planets':rows,'house_reference':'Natal D'+code+' ascendant',
+   'coordinate_note':'Actual sidereal zodiac positions.' if n==1 else 'Divisional projections of transit longitudes; derived coordinates, not physical zodiac positions or a validated event forecast.'}
+  focus='overall natal placements and houses' if n==1 else CHART_TOPICS[n]
+  c['summary']={'focus':focus,'text':f"D{n} concerns {focus} in traditional astrology. Natal ascendant: {c['ascendant']}. "+('Its house placements are provisional because the ascendant changes within the sampled birth-time range.' if c['sensitive'] else 'The natal ascendant is stable within the sampled birth-time range.'),
+   'placements':[f"{p['name']}: {p['sign']} {p['mapping']['mapped_degree']:.2f}°, house {p['house']}"+(' (retrograde)' if p['retrograde'] else '') for p in c['planets']]}
+
+
 def calculate(profile,now=None):
  now=now or datetime.now(timezone.utc);place=profile['place'];lat=float(place['latitude']);lon=float(place['longitude'])
  if not math.isfinite(lat) or not math.isfinite(lon) or abs(lat)>=66 or abs(lon)>180:raise ValueError('This release supports latitudes between 66° south and 66° north.')
@@ -115,6 +141,7 @@ def calculate(profile,now=None):
  charts={}
  for n in VARGAS:
   a=division(asc,n);charts[str(n)]={'division':n,'mapping_rule':DIVISION_RULES[n],'ascendant_mapping':division_details(asc,n),'ascendant':SIGNS[a],'ascendant_index':a,'sensitive':len({division(v,n) for v in samples})>1,'planets':[dict(p,mapping=division_details(p['longitude'],n),sign=SIGNS[division(p['longitude'],n)],sign_index=division(p['longitude'],n),house=(division(p['longitude'],n)-a)%12+1) for p in positions.values()]}
+ attach_transits(charts,now)
  return {'profile':profile,'birth_utc':birth.isoformat(),'generated_at':now.isoformat(),'ascendant':{'sign':SIGNS[int(asc/30)],'degree':asc%30},'planets':list(positions.values()),'charts':charts,'dashas':dashas(positions['Moon']['longitude'],birth,now),'settings':{'zodiac':'Sidereal','ayanamsa':'Lahiri','ayanamsa_degrees':ayan,'houses':'Whole sign','nodes':'Mean','ephemeris':'Swiss Ephemeris / Moshier','version':swe.version,'varga_convention':'Parashari; D2 Cancer/Leo, unequal D30, D60 counted from natal sign; D81 applies the conventional Navamsa mapping twice'},'warnings':['Birth time is treated as recorded to the minute. Sensitivity is sampled at ±30 and ±60 seconds; it is not a complete birth-time rectification.','Birthplace coordinates represent a locality, not a precise delivery-room location.','Divisional chart interpretation is traditional and not scientifically predictive.']}
 
 HOUSE_THEMES={1:'identity and personal direction',3:'communication and independent effort',4:'home and foundations',6:'service and daily responsibilities',8:'change and shared resources',9:'learning, beliefs and guidance',2:'savings, speech and family resources',5:'learning, creativity and judgement',7:'partnerships and collaboration',10:'profession and public responsibilities',11:'income, networks and ambitions',12:'expenditure, privacy and retreat'}

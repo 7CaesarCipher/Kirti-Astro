@@ -87,7 +87,7 @@ class Handler(BaseHTTPRequestHandler):
    if url.path=='/':return self.send(200,(ROOT/'web/index.html').read_bytes(),'text/html; charset=utf-8')
    if url.path in ['/app.js','/i18n.js','/style.css']:
     return self.send(200,(ROOT/'web'/url.path[1:]).read_bytes(),'application/javascript' if url.path.endswith('.js') else 'text/css')
-   if url.path=='/api/health':return self.send(200,{'status':'ok','chart_engine':astro.swe.version,'llm_configured':bool(os.environ.get('OLLAMA_MODEL')),'translation_configured':bool(os.environ.get('OLLAMA_TRANSLATION_MODEL') or os.environ.get('OLLAMA_MODEL'))})
+   if url.path=='/api/health':return self.send(200,{'status':'ok','chart_engine':astro.swe.version,'llm_configured':bool(os.environ.get('OLLAMA_MODEL')),'hindi_mode':'grounded_summary','freeform_translation_enabled':False})
    if url.path=='/api/places':return self.send(200,{'places':places.search(urllib.parse.parse_qs(url.query).get('q',[''])[0])})
    return self.send(404,{'error':'Not found'})
   except ValueError as e:return self.send(400,{'error':str(e)})

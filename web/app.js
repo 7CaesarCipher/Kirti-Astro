@@ -206,6 +206,34 @@ function chartView(c) {
   center.append(el("small", c.ascendant + " rising"));
   grid.append(center);
   card.append(grid);
+  const summary = el("details", undefined, "chart-specific-summary");
+  summary.append(el("summary", "Your chart summary"));
+  if (c.summary) {
+    summary.append(el("p", c.summary.text));
+    c.summary.placements.forEach(text => summary.append(el("p", text, "small")));
+  }
+  card.append(summary);
+  if (c.transit) {
+    const transit = el("details", undefined, "chart-transits");
+    transit.append(el("summary", "Transit zodiac · " + c.transit.as_of.slice(0, 10) + " UTC"));
+    transit.append(el("p", "Snapshot: " + c.transit.as_of + ". Houses counted from " + c.transit.house_reference + ".", "small"));
+    transit.append(el("p", c.transit.coordinate_note, "small"));
+    const wrap = el("div", undefined, "table-wrap");
+    const table = el("table");
+    const head = el("tr");
+    ["Planet", "Transit zodiac", "D" + c.division + " sign / angle", "Natal house"].forEach(text => head.append(el("th", text)));
+    const thead = el("thead"); thead.append(head); table.append(thead);
+    const body = el("tbody");
+    c.transit.planets.forEach(p => {
+      const row = el("tr");
+      [p.name + (p.retrograde ? " ℞" : ""), p.mapping.natal_position, p.sign + " " + angle(p.degree), String(p.house)].forEach(text => row.append(el("td", text)));
+      body.append(row);
+    });
+    table.append(body); wrap.append(table); transit.append(wrap);
+    transit.append(el("p", "℞ means apparent backward motion. This snapshot is cached with your reading; generate a new reading to update it.", "small"));
+    card.append(transit);
+  }
+
   card.append(el("p", "℞ = retrograde: apparent backward motion as viewed from Earth. Each sign spans 0°–30°. " + (c.division === 1 ? "Angles show natal positions." : "Angles show progress through the natal subdivision scaled to 0°–30°; they are derived chart coordinates."), "small"));
   const details = el("details");
   details.append(el("summary", "How the 30° sign is divided"));
