@@ -1,4 +1,4 @@
-"""Research-only keyword retrieval; does not generate astrological advice."""
+
 import argparse,sqlite3,json
 from pathlib import Path
 p=argparse.ArgumentParser();p.add_argument('query');p.add_argument('--source',default=None);p.add_argument('--limit',type=int,default=5);a=p.parse_args()

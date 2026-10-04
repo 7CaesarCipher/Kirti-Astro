@@ -122,3 +122,5 @@ Hindi replies now use deterministic summaries of stored chart calculations. They
 Chat uses the stored chart, timing analysis and assessment; switching language or asking another question does not recalculate the birth chart. Marriage replies receive D1 and D9 placements and retain the topic for follow-up questions.
 
 The assessment panel includes all six Shadbala categories, BAV/SAV, reductions, Shodhya Pindas and D1 checks for the 284-rule pinned yoga catalogue. Local corpus research excerpts retain source IDs and locators. Unreviewed excerpts are explicitly labelled and do not become approved interpretation evidence. See [ASSESSMENT.md](ASSESSMENT.md) for methods and limitations.
+
+Advanced PyJHora analysis adds 23 package charts, custom cyclic divisions through D300, four dasha systems with three depths, Panchanga, annual returns, Vimsopaka, Baladi states, Arudhas, Karakas, aspects and a monthly BAV/SAV transit calendar. See [JHORA_FEATURES.md](JHORA_FEATURES.md) for settings, conventions and the distinction from JHora desktop.

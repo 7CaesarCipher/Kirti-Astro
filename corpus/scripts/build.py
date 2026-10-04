@@ -1,4 +1,4 @@
-"""Rebuild a traceable research corpus using Python standard library only."""
+
 from pathlib import Path
 import json,re,hashlib,sqlite3,xml.etree.ElementTree as ET
 ROOT=Path(__file__).resolve().parents[1]

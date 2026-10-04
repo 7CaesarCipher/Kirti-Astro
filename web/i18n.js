@@ -38,7 +38,7 @@
       "#results .eyebrow": "YOUR PERSONAL READING",
       "#new-reading": "New reading",
       ".section-heading h2": "Your key charts",
-      ".section-heading span": "South Indian layout · signs fixed",
+      ".section-heading span": "North Indian layout · houses fixed",
       "#divisional-charts > summary": "Explore all 17 divisional charts",
       "#divisional-charts label": "Choose a chart",
       ".reading .eyebrow": "THE BIG PICTURE",
@@ -72,7 +72,7 @@
       "#results .eyebrow": "आपकी व्यक्तिगत रीडिंग",
       "#new-reading": "नई रीडिंग",
       ".section-heading h2": "आपकी मुख्य कुंडलियाँ",
-      ".section-heading span": "दक्षिण भारतीय प्रारूप · राशियाँ स्थिर",
+      ".section-heading span": "उत्तर भारतीय प्रारूप · भाव स्थिर",
       "#divisional-charts > summary": "सभी 17 विभागीय कुंडलियाँ देखें",
       "#divisional-charts label": "कुंडली चुनें",
       ".reading .eyebrow": "समग्र दृष्टि",
@@ -183,7 +183,7 @@
     const nodes = [];
     while (walker.nextNode()) nodes.push(walker.currentNode);
     nodes.forEach((node) => {
-      if (node.parentElement.closest("#language, #chat-language, #answer, #messages, #reading-mode, #chat-scope, #chat-translation-status, #selected-reading-title, #suggested-questions, #assessment, .chart-summary")) return;
+      if (node.parentElement.closest("#language, #chat-language, #answer, #messages, #reading-mode, #chat-scope, #chat-translation-status, #selected-reading-title, #suggested-questions, #assessment, #report-navigation, #report-content, .north-indian-chart, #jhora-workbench, .chart-summary, .birthplace-coordinates, .chart-specific-summary, .transit-chart-panel, .chart-transits")) return;
       let value = node.nodeValue;
       Object.entries(terms).forEach(([english, hindi]) => {
         const bilingual = `${english} / ${hindi}`;

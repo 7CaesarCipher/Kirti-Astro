@@ -23,3 +23,16 @@ class TransitTests(unittest.TestCase):
    astro.reading(c,'overview',9)
  def test_timezone_required(self):
   with self.assertRaises(ValueError):astro.attach_transits({},datetime(2026,10,2))
+
+ def test_place_coordinates_preserved_and_chart_summaries_bypass_ai(self):
+  import os,server
+  c=astro.calculate({'name':'Test','date':'1989-10-15','time':'20:30','place':places.LOCAL.copy()},datetime(2026,10,2,tzinfo=timezone.utc))
+  with patch.dict(os.environ,{'OLLAMA_MODEL':'test-model'}),patch.object(server.pipeline,'ollama',side_effect=AssertionError('No AI chart readings')),patch.object(server.pipeline,'ollama_stream',side_effect=AssertionError('No AI chart readings')):
+   for division in astro.VARGAS:
+    selected=c['charts'][str(division)]
+    self.assertEqual(selected['birthplace']['latitude'],places.LOCAL['latitude'])
+    self.assertEqual(selected['birthplace']['longitude'],places.LOCAL['longitude'])
+    self.assertEqual(selected['birthplace']['provider'],places.LOCAL['provider'])
+    answer=server.english_answer(c,'overview',[],division=division)
+    self.assertEqual(answer['mode'],'calculated')
+    self.assertIn('D'+str(division),answer['text'])

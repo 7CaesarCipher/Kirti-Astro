@@ -87,12 +87,14 @@ def calculate(chart):
                 checked.append({'id':key,'name':details[0],'rule':details[1],'status':'present' if present else 'absent'})
             except Exception as error:
                 checked.append({'id':key,'name':details[0],'rule':details[1],'status':'not_evaluated','reason':type(error).__name__})
+        try:bhava={'status':'calculated','method':'KN Rao / equal houses centred on the ascendant','houses':charts.bhava_chart(jd,place,bhava_madhya_method=1)}
+        except Exception as error:bhava={'status':'not_calculated','reason':type(error).__name__}
         astro.swe.set_sid_mode(astro.swe.SIDM_LAHIRI)
     present=[row for row in checked if row['status']=='present']
     # Exact name/rule searches are review aids, not evidence of expert approval.
     for row in present:
         row['corpus_candidates']=corpus_candidates(row['name'])
-    return {'engine':'PyJHora','version':importlib.metadata.version('PyJHora'),
+    return {'bhava_chalit':bhava,'engine':'PyJHora','version':importlib.metadata.version('PyJHora'),
             'shadbala':{'planets':rows,'component_order':list(parts),'units':'virupas; 60 virupas = 1 rupa','minimum_ratios':'Not assigned: threshold conventions differ; raw component totals are displayed.',
                         'method':'Lahiri; library Sthana/Kala/Naisargika/Drik; Dig method 2; epoch-table Cheshta with circular averaging; Sun/Moon Cheshta zero under this convention'},
             'ashtakavarga':{'signs':astro.SIGNS,'bav':{name:bav[i] for i,name in enumerate(NAMES+['Ascendant'])},'sav':sav,'prastara':prastara,'trikona_reduced':trikona,'ekadhipatya_reduced':reduced,'pindas':pindas,'sav_total':sum(sav),'occupancy_convention':'Seven classical planets and ascendant; nodes excluded; SAV excludes ascendant BAV'},

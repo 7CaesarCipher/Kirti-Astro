@@ -88,6 +88,16 @@ class ChartTests(unittest.TestCase):
    self.assertEqual(result['mode'],'llm')
    payload=model.call_args.args[1];context=json.loads(payload['messages'][-1]['content'])
    self.assertEqual(context['chart_facts']['selected_division'],9)
+   primary=context['chart_facts']['primary_chart']
+   self.assertEqual(primary['division'],1)
+   self.assertEqual(primary['ascendant'],c['charts']['1']['ascendant'])
+   original={p['name']:p for p in primary['planets']}
+   for derived in context['chart_facts']['selected_chart']['planets']:
+    self.assertEqual(derived['natal_longitude'],original[derived['name']]['natal_longitude'])
+    self.assertEqual(derived['chart_degree'],next(p['mapping']['mapped_degree'] for p in c['charts']['9']['planets'] if p['name']==derived['name']))
+   self.assertIn('D1 in primary_chart',payload['messages'][0]['content'])
+   self.assertIn('Navamsa',context['chart_facts']['selected_chart']['label'])
+   self.assertIn('not the ninth house',payload['messages'][0]['content'])
    self.assertEqual(context['question'],'when i get married')
    self.assertEqual(context['recent_conversation'][0]['content'],'Earlier question')
    self.assertNotIn('charts',context['chart_facts'])
@@ -131,7 +141,7 @@ class ChartTests(unittest.TestCase):
    req=urllib.request.Request(base+path,data=json.dumps(data).encode(),headers={'Content-Type':'application/json','Authorization':'Bearer '+token});return json.load(urllib.request.urlopen(req))
   try:
    html=urllib.request.urlopen(base).read();self.assertIn(b'Generate my reading',html);self.assertNotIn(b'Research mode',html)
-   r=post('/api/reading',{'name':'Test','date':'1989-10-15','time':'20:30','place_id':places.LOCAL['id']});self.assertEqual(r['answer']['mode'],'basic')
+   r=post('/api/reading',{'name':'Test','date':'1989-10-15','time':'20:30','place_id':places.LOCAL['id']});self.assertEqual(r['answer']['mode'],'calculated')
    with self.assertRaises(urllib.error.HTTPError):post('/api/chat',{'question':'money'},'wrong-token')
    follow=post('/api/chat',{'question':'money'},r['token']);self.assertIn('Mercury',follow['text'])
    for n in astro.VARGAS:
@@ -140,6 +150,11 @@ class ChartTests(unittest.TestCase):
     if n!=1:
      for planet in r['chart']['charts'][str(n)]['planets']:
       self.assertIn(f"{planet['name']}: {planet['sign']}, house {planet['house']}",chosen['text'])
+   advanced=post('/api/jhora',{'division':1},r['token']);self.assertEqual(len(advanced['predefined']),23)
+   with patch.object(app_server.jhora_features,'calculate',side_effect=AssertionError('Reuse report cache')):
+    cached=post('/api/jhora',{'division':1},r['token']);self.assertEqual(cached['selected'],advanced['selected'])
+   with self.assertRaises(urllib.error.HTTPError):post('/api/jhora',{'division':301},r['token'])
+   with self.assertRaises(urllib.error.HTTPError):post('/api/jhora',{'division':1},'wrong-token')
    with self.assertRaises(urllib.error.HTTPError):post('/api/chart-reading',{'division':5},r['token'])
    with self.assertRaises(urllib.error.HTTPError):post('/api/chart-reading',{'division':9},'wrong-token')
    follow=post('/api/chat',{'question':'overview','division':9},r['token']);self.assertIn('D9',follow['text'])
@@ -160,7 +175,7 @@ class ChartTests(unittest.TestCase):
     self.assertIn('hi',events[-1]['answer']['translations'])
     self.assertGreater(len([e for e in events if e['type']=='delta']),2)
     self.assertEqual(app_server.SESSIONS[r['token']]['history'][-1]['content'],'Mars is in Gemini, house 2.')
-   with patch.dict(os.environ,{'OLLAMA_MODEL':'test-local-model'}),patch.object(app_server.pipeline,'ollama_stream',return_value=iter(['प्रश्न 3'])):
+   with patch.dict(os.environ,{'OLLAMA_MODEL':'test-local-model'}),patch.object(app_server.pipeline,'ollama',return_value={'message':{'content':'प्रश्न 3'}}):
     events=stream('/api/translate-stream',{'text':'Question 2','language':'hi'})
     self.assertNotIn('hi',events[-1]['answer']['translations'])
     self.assertEqual(events[-1]['answer']['text'],'Question 2')

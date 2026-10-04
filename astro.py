@@ -130,10 +130,12 @@ def calculate(profile,now=None):
  with LOCK:
   swe.set_sid_mode(swe.SIDM_LAHIRI)
   asc=swe.houses_ex(jd,lat,lon,b'W',swe.FLG_SIDEREAL)[1][0]
-  positions={};flags=swe.FLG_MOSEPH|swe.FLG_SIDEREAL|swe.FLG_SPEED
+  positions={};tropical_positions={};flags=swe.FLG_MOSEPH|swe.FLG_SIDEREAL|swe.FLG_SPEED
   for name,planet in [('Sun',0),('Moon',1),('Mercury',2),('Venus',3),('Mars',4),('Jupiter',5),('Saturn',6),('Rahu',swe.MEAN_NODE)]:
    values,ret=swe.calc_ut(jd,planet,flags);positions[name]={'longitude':values[0],'retrograde':values[3]<0}
+   tropical,_=swe.calc_ut(jd,planet,swe.FLG_MOSEPH|swe.FLG_SPEED);tropical_positions[name]={'name':name,'longitude':tropical[0],'sign':SIGNS[int(tropical[0]//30)],'degree':tropical[0]%30,'retrograde':tropical[3]<0}
   positions['Ketu']={'longitude':(positions['Rahu']['longitude']+180)%360,'retrograde':positions['Rahu']['retrograde']}
+  ketu=(tropical_positions['Rahu']['longitude']+180)%360;tropical_positions['Ketu']={'name':'Ketu','longitude':ketu,'sign':SIGNS[int(ketu//30)],'degree':ketu%30,'retrograde':tropical_positions['Rahu']['retrograde']}
   samples=[swe.houses_ex(jd+m/1440,lat,lon,b'W',swe.FLG_SIDEREAL)[1][0] for m in [-1,-.5,0,.5,1]]
   ayan=swe.get_ayanamsa_ut(jd)
  for name,p in positions.items():
@@ -141,8 +143,9 @@ def calculate(profile,now=None):
  charts={}
  for n in VARGAS:
   a=division(asc,n);charts[str(n)]={'division':n,'mapping_rule':DIVISION_RULES[n],'ascendant_mapping':division_details(asc,n),'ascendant':SIGNS[a],'ascendant_index':a,'sensitive':len({division(v,n) for v in samples})>1,'planets':[dict(p,mapping=division_details(p['longitude'],n),sign=SIGNS[division(p['longitude'],n)],sign_index=division(p['longitude'],n),house=(division(p['longitude'],n)-a)%12+1) for p in positions.values()]}
+ for c in charts.values():c['birthplace']={key:place[key] for key in ['label','latitude','longitude','timezone','provider','source']}
  attach_transits(charts,now)
- return {'profile':profile,'birth_utc':birth.isoformat(),'generated_at':now.isoformat(),'ascendant':{'sign':SIGNS[int(asc/30)],'degree':asc%30},'planets':list(positions.values()),'charts':charts,'dashas':dashas(positions['Moon']['longitude'],birth,now),'settings':{'zodiac':'Sidereal','ayanamsa':'Lahiri','ayanamsa_degrees':ayan,'houses':'Whole sign','nodes':'Mean','ephemeris':'Swiss Ephemeris / Moshier','version':swe.version,'varga_convention':'Parashari; D2 Cancer/Leo, unequal D30, D60 counted from natal sign; D81 applies the conventional Navamsa mapping twice'},'warnings':['Birth time is treated as recorded to the minute. Sensitivity is sampled at ±30 and ±60 seconds; it is not a complete birth-time rectification.','Birthplace coordinates represent a locality, not a precise delivery-room location.','Divisional chart interpretation is traditional and not scientifically predictive.']}
+ return {'profile':profile,'birth_utc':birth.isoformat(),'generated_at':now.isoformat(),'ascendant':{'sign':SIGNS[int(asc/30)],'degree':asc%30},'planets':list(positions.values()),'tropical_planets':list(tropical_positions.values()),'charts':charts,'dashas':dashas(positions['Moon']['longitude'],birth,now),'settings':{'zodiac':'Sidereal','ayanamsa':'Lahiri','ayanamsa_degrees':ayan,'houses':'Whole sign','nodes':'Mean','ephemeris':'Swiss Ephemeris / Moshier','version':swe.version,'varga_convention':'Parashari; D2 Cancer/Leo, unequal D30, D60 counted from natal sign; D81 applies the conventional Navamsa mapping twice'},'warnings':['Birth time is treated as recorded to the minute. Sensitivity is sampled at ±30 and ±60 seconds; it is not a complete birth-time rectification.','Birthplace coordinates represent a locality, not a precise delivery-room location.','Divisional chart interpretation is traditional and not scientifically predictive.']}
 
 HOUSE_THEMES={1:'identity and personal direction',3:'communication and independent effort',4:'home and foundations',6:'service and daily responsibilities',8:'change and shared resources',9:'learning, beliefs and guidance',2:'savings, speech and family resources',5:'learning, creativity and judgement',7:'partnerships and collaboration',10:'profession and public responsibilities',11:'income, networks and ambitions',12:'expenditure, privacy and retreat'}
 CHART_TOPICS={2:'wealth and resources',3:'siblings and effort',4:'home and property',7:'children and creativity',9:'partnerships and dharma',10:'profession and public responsibilities',12:'parents and family line',16:'comforts and vehicles',20:'spiritual practice',24:'learning and education',27:'strengths and weaknesses',30:'difficulties and challenges',40:'auspicious traditional themes',45:'character and conduct',60:'fine traditional influences',81:'nested Navamsa themes'}

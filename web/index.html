@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Kirti Astro</title>
     <link rel="stylesheet" href="/style.css" />
-    <script defer src="/app.js"></script>
+    <script defer src="/app.js?v=instant-chat-translation-13"></script>
     <script defer src="/i18n.js"></script>
   </head>
   <body>
@@ -78,6 +78,7 @@
             online location service.
           </p>
         </form>
+        </div>
         <p class="disclaimer">
           A traditional perspective for reflection, not a prediction of certain
           events.
@@ -92,11 +93,23 @@
           </div>
           <button id="new-reading" class="secondary">New reading</button>
         </div>
+        <section id="report-navigation" class="card report-navigation">
+          <label for="calculation-mode">Kundali view</label>
+          <select id="calculation-mode"><option value="existing">1 · Kundali</option><option value="pyjhora">2 · JHora</option></select>
+          <div id="existing-report-picker">
+          <label for="report-choice">Choose a report</label>
+          <div class="report-picker-row"><select id="report-choice" aria-label="Choose a report"></select><button id="print-selected-report" class="secondary" type="button">Print this report</button></div>
+          </div>
+          <p class="small">Explore your calculated charts and tables. D1 is the main birth chart; divisional charts use the same natal longitudes.</p>
+        </section>
+        <section id="pyjhora-mode" hidden></section>
+        <section id="report-content" class="card" hidden aria-live="polite"></section>
+        <div id="dashboard-content">
         <div id="summary-cards" class="summary-cards"></div>
         <div id="uncertainty" class="notice"></div>
         <div class="section-heading">
           <h2>Your key charts</h2>
-          <span>South Indian layout · signs fixed</span>
+          <span>North Indian layout · houses fixed</span>
         </div>
         <section class="card chart-guide" id="chart-guide">
           <h2>How the chart is calculated</h2>
@@ -107,6 +120,26 @@
           </p>
         </section>
         <details class="card more"><summary>Yogas, Shadbala and Ashtakavarga</summary><div id="assessment"></div></details>
+        <details id="jhora-workbench" class="card more">
+          <summary>Advanced PyJHora analysis</summary>
+          <p>Calculated reports with 23 predefined divisions and custom cyclic divisions through D300. This is a PyJHora integration; agreement with JHora desktop has not been independently verified.</p>
+          <form id="jhora-form">
+            <div class="two">
+              <label>Chart division <select id="jhora-division"></select></label>
+              <label>Custom cyclic D1–D300 <input id="jhora-custom" type="number" min="1" max="300" placeholder="Optional"></label>
+              <label>Ayanamsa <select id="jhora-ayanamsa"><option value="LAHIRI">Lahiri</option><option value="RAMAN">Raman</option><option value="KP">Krishnamurti</option><option value="FAGAN">Fagan–Bradley</option></select></label>
+              <label>House cusp system <select id="jhora-houses"><option value="W">Whole sign</option><option value="E">Equal</option><option value="P">Placidus</option></select></label>
+              <label>Dasha detail <select id="jhora-depth"><option value="1">Mahadasha</option><option value="2" selected>Antardasha</option><option value="3">Pratyantardasha</option></select></label>
+              <label>Annual return year <input id="jhora-year" type="number" min="1901" max="2100" required></label>
+              <label>Report names <select id="jhora-language"><option value="en">English</option><option value="hi">Hindi</option><option value="ta">Tamil</option><option value="te">Telugu</option><option value="ka">Kannada</option><option value="ml">Malayalam</option></select></label>
+              <label>Chart style <select id="jhora-style"><option value="north" selected>North Indian house diamond</option><option value="south">South Indian zodiac grid</option><option value="table">Placement table</option></select></label>
+            </div>
+            <button class="primary" type="submit">Calculate advanced report</button>
+          </form>
+          <p id="jhora-status" role="status"></p>
+          <div class="report-actions"><button id="jhora-print" type="button" hidden>Print report</button> <button id="jhora-export" type="button" hidden>Download calculated data</button></div>
+          <div id="jhora-report"></div>
+        </details>
         <div id="key-charts" class="charts"></div>
         <details id="divisional-charts" class="card more">
           <summary>Explore all 17 divisional charts</summary>
